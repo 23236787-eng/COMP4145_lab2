@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-panel">
+    <div class="panel-header">
+        <h2>MSFT Price and Moving Averages</h2>
+    </div>
+    <div class="chart-wrap">
+        <canvas id="priceChart"></canvas>
+    </div>
+</section>
+
+<section class="stats-inline">
+    <div class="mini-card">
+        <span>Total Trades</span>
+        <strong>{{ stats.total_trades }}</strong>
+    </div>
+    <div class="mini-card">
+        <span>Win Rate</span>
+        <strong>{{ stats.win_rate }}%</strong>
+    </div>
+    <div class="mini-card">
+        <span>Average Profit</span>
+        <strong>{{ stats.average_profit_pct }}%</strong>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const chartData = {{ chart_data|tojson }};
+    const buyPoints = {{ buy_points|tojson }};
+    const sellPoints = {{ sell_points|tojson }};
+
+    const labels = chartData.map(item => item.date);
+    const closeValues = chartData.map(item => item.close);
+    const ma50Values = chartData.map(item => item.ma50);
+    const ma200Values = chartData.map(item => item.ma200);
+
+    const buyMap = buyPoints.map(point => ({ x: point.date, y: point.price }));
+    const sellMap = sellPoints.map(point => ({ x: point.date, y: point.price }));
+
+    new Chart(document.getElementById('priceChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Price',
+                    data: closeValues,
+                    borderColor: '#0f172a',
+                    backgroundColor: 'rgba(15, 23, 42, 0.08)',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false,
+                    tension: 0.15,
+                },
+                {
+                    label: 'Short-term MA (50)',
+                    data: ma50Values,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false,
+                    tension: 0.15,
+                },
+                {
+                    label: 'Long-term MA (200)',
+                    data: ma200Values,
+                    borderColor: '#f97316',
+                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false,
+                    tension: 0.15,
+                },
+                {
+                    label: 'Buy Points',
+                    data: buyMap,
+                    type: 'scatter',
+                    showLine: false,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#22c55e',
+                    pointBorderColor: '#15803d',
+                },
+                {
+                    label: 'Sell Points',
+                    data: sellMap,
+                    type: 'scatter',
+                    showLine: false,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#ef4444',
+                    pointBorderColor: '#b91c1c',
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'nearest',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(items) {
+                            return items[0].label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Price ($)'
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-panel">
+    <div class="panel-header">
+        <h2>Overall Trade Statistics</h2>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card accent-blue">
+            <span class="label">Total Trades</span>
+            <strong>{{ stats.total_trades }}</strong>
+        </div>
+        <div class="stat-card accent-green">
+            <span class="label">Winning Trades</span>
+            <strong>{{ stats.winning_trades }}</strong>
+        </div>
+        <div class="stat-card accent-red">
+            <span class="label">Losing Trades</span>
+            <strong>{{ stats.losing_trades }}</strong>
+        </div>
+        <div class="stat-card accent-gold">
+            <span class="label">Win Rate</span>
+            <strong>{{ stats.win_rate }}%</strong>
+        </div>
+        <div class="stat-card accent-purple">
+            <span class="label">Average Profit</span>
+            <strong>{{ stats.average_profit_pct }}%</strong>
+        </div>
+        <div class="stat-card accent-orange">
+            <span class="label">Average Holding Days</span>
+            <strong>{{ stats.average_holding_days }}</strong>
+        </div>
+        <div class="stat-card accent-teal">
+            <span class="label">Target Reached</span>
+            <strong>{{ stats.target_reached }}</strong>
+        </div>
+        <div class="stat-card accent-pink">
+            <span class="label">Max Holding Period</span>
+            <strong>{{ stats.max_holding_period }}</strong>
+        </div>
+        <div class="stat-card accent-slate">
+            <span class="label">Best Trade</span>
+            <strong>{{ stats.best_trade_pct }}%</strong>
+        </div>
+        <div class="stat-card accent-slate-dark">
+            <span class="label">Worst Trade</span>
+            <strong>{{ stats.worst_trade_pct }}%</strong>
+        </div>
+    </div>
+</section>
+{% endblock %}

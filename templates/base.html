@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | Trading Strategy Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div>
+                <h1>Trading Strategy Dashboard</h1>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link {% if title == 'Price Chart' %}active{% endif %}">Price Chart</a>
+                <a href="/statistics" class="nav-link {% if title == 'Trade Statistics' %}active{% endif %}">Trade Statistics</a>
+                <a href="/trades" class="nav-link {% if title == 'Detailed Trades' %}active{% endif %}">Detailed Trades</a>
+            </nav>
+        </header>
+
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

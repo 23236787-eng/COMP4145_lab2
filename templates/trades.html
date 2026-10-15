@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-panel">
+    <div class="panel-header">
+        <h2>Detailed Trade Records</h2>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Buy Date</th>
+                    <th>Sell Date</th>
+                    <th>Buy Price</th>
+                    <th>Sell Price</th>
+                    <th>Holding Days</th>
+                    <th>Profit %</th>
+                    <th>Sell Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trade in trades %}
+                <tr>
+                    <td>{{ trade.buy_date }}</td>
+                    <td>{{ trade.sell_date }}</td>
+                    <td>${{ '%.2f'|format(trade.buy_price) }}</td>
+                    <td>${{ '%.2f'|format(trade.sell_price) }}</td>
+                    <td>{{ trade.holding_days }}</td>
+                    <td class="profit {% if trade.profit_pct >= 0 %}positive{% else %}negative{% endif %}">{{ '%.2f'|format(trade.profit_pct) }}%</td>
+                    <td>{{ trade.sell_reason }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
